@@ -25,7 +25,10 @@ class UserController extends Controller
         "loginname"=>"min:6|max:16|required",
         "loginpassword"=>"min:6|max:16|required",
       ]);
-      return "login";
+      if(auth()->attempt(['name'=>$validatedCredentials['loginname'],'password'=>$validatedCredentials['loginpassword']])){
+        $request->session()->regenerate();
+      }
+      return redirect('/');
     }
     public function logout(Request $request){
       auth()->logout();
